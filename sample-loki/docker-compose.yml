@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
+      - ./container/loki:/tmp/loki
+
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+
+  app:
+    image: vanhtuan/simple-app
+    container_name: app
+    ports:
+      - 8080:8080
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.{{.Name}}.{{.ID}}"
+    depends_on:
+      - fluentd
+
+  # promtail:
+  #   image: grafana/promtail:latest
+  #   container_name: promtail
+  #   volumes:
+  #     - /var/lib/docker/containers:/var/log
+  #     - ./promtail.yaml:/etc/promtail/promtail.yaml
+  #   command: -config.file=/etc/promtail/promtail.yaml
+
+  fluentd:
+    image: grafana/fluent-plugin-loki:master
+    container_name: fluentd
+    volumes:
+      - ./fluentd.conf:/fluentd/etc/fluentd.conf
+    ports:
+      - 24224:24224
+    environment:
+      FLUENTD_CONF: /fluentd/etc/fluentd.conf
+    depends_on:
+      - loki
