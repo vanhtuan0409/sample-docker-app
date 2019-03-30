@@ -1,0 +1,20 @@
+nowdns.local:53 {
+  errors
+  log
+
+  etcd {
+    path /nowdns
+    endpoint http://etcd:2379
+  }
+
+  hosts {
+    103.60.17.107 my.yolo.nowdns.local
+    103.60.17.107 some.yolo.nowdns.local
+  }
+}
+
+.:53 {
+  errors
+  log
+  forward . 8.8.8.8:53
+}

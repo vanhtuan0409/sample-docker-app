@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+  etcd0:
+    image: quay.io/coreos/etcd
+    container_name: etcd0
+    ports:
+      - 2379:2379
+    volumes:
+      - ./volumes/etcd0:/etcd-data
+      - ./config0.yml:/data/config.yml
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - --config-file=/data/config.yml
+    environment:
+      - ETCDCTL_API=3
+
+  etcd1:
+    image: quay.io/coreos/etcd
+    container_name: etcd1
+    ports:
+      - 2380:2379
+    volumes:
+      - ./volumes/etcd1:/etcd-data
+      - ./config1.yml:/data/config.yml
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - --config-file=/data/config.yml
+    environment:
+      - ETCDCTL_API=3
+
+  etcd2:
+    image: quay.io/coreos/etcd
+    container_name: etcd2
+    ports:
+      - 2381:2379
+    volumes:
+      - ./volumes/etcd2:/etcd-data
+      - ./config2.yml:/data/config.yml
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - --config-file=/data/config.yml
+    environment:
+      - ETCDCTL_API=3
+
+  etcd3:
+    image: quay.io/coreos/etcd
+    container_name: etcd3
+    ports:
+      - 2382:2379
+    volumes:
+      - ./volumes/etcd3:/etcd-data
+      - ./config3.yml:/data/config.yml
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - --config-file=/data/config.yml
+    environment:
+      - ETCDCTL_API=3
+
+  browser:
+    image: soyking/e3w:latest
+    container_name: etcd_browser
+    volumes:
+      - ./browser.ini:/app/conf/config.default.ini
+    ports:
+      - 8080:8080
+    depends_on:
+      - etcd0
+      - etcd1
+      - etcd2
+      - etcd3

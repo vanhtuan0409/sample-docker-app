@@ -1,0 +1,11 @@
+FROM centos:7
+
+ARG VERSION=1.2.6
+
+ADD "https://github.com/coredns/coredns/releases/download/v${VERSION}/coredns_${VERSION}_linux_amd64.tgz" /app/
+
+WORKDIR /app
+
+RUN tar xvzf coredns_${VERSION}_linux_amd64.tgz && rm coredns_${VERSION}_linux_amd64.tgz
+
+ENTRYPOINT ["/app/coredns"]

@@ -1,0 +1,33 @@
+version: "3.1"
+services:
+  coredns:
+    image: vanhtuan0409/coredns
+    build:
+      context: ./coredns
+      dockerfile: Dockerfile.coredns
+    container_name: coredns
+    command: ["-conf", "/etc/coredns/Corefile"]
+    ports:
+      - "5300:53/tcp"
+      - "5300:53/udp"
+    volumes:
+      - ./config:/etc/coredns
+
+  etcd:
+    image: quay.io/coreos/etcd
+    container_name: etcd
+    environment:
+      - ETCDCTL_API=3
+      - ETCD_DATA_DIR=/data/etcd
+    volumes:
+      - ./container/etcd:/data/etcd
+    ports:
+      - 2379
+    command:
+      - /usr/local/bin/etcd
+      - -name
+      - etcd0
+      - -advertise-client-urls
+      - http://etcd:2379
+      - -listen-client-urls
+      - http://0.0.0.0:2379
