@@ -1,0 +1,63 @@
+version: "2.1"
+services:
+  kong-migrations:
+    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    command: kong migrations up
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_DATABASE: ${KONG_PG_DATABASE:-kong}
+      KONG_PG_HOST: db
+      KONG_PG_PASSWORD: ${KONG_PG_PASSWORD:-kong}
+      KONG_PG_USER: ${KONG_PG_USER:-kong}
+  kong:
+    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    container_name: kong
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001"
+      KONG_CASSANDRA_CONTACT_POINTS: db
+      KONG_DATABASE: postgres
+      KONG_PG_DATABASE: ${KONG_PG_DATABASE:-kong}
+      KONG_PG_HOST: db
+      KONG_PG_PASSWORD: ${KONG_PG_PASSWORD:-kong}
+      KONG_PG_USER: ${KONG_PG_USER:-kong}
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+    ports:
+      - "80:8000/tcp" #http port
+      - "8001:8001/tcp"
+      - "443:8443/tcp" #https port
+      - "8444:8444/tcp"
+    restart: on-failure
+  dashboard:
+    image: pgbi/kong-dashboard
+    command: start --kong-url http://kong:8001
+    depends_on:
+      - kong
+    ports:
+      - "7777:8080/tcp"
+  app:
+    image: jwilder/whoami
+    container_name: whoami
+  db:
+    image: postgres:9.5
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${KONG_PG_DATABASE:-kong}
+      POSTGRES_PASSWORD: ${KONG_PG_PASSWORD:-kong}
+      POSTGRES_USER: ${KONG_PG_USER:-kong}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${KONG_PG_USER:-kong}"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+    stdin_open: true
+    tty: true
