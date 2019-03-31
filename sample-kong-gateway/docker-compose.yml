@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   kong-migrations:
-    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    image: kong:1.0.3-alpine
     command: kong migrations bootstrap
     depends_on:
       db:
@@ -13,7 +13,7 @@ services:
       KONG_PG_PASSWORD: ${KONG_PG_PASSWORD:-kong}
       KONG_PG_USER: ${KONG_PG_USER:-kong}
   kong:
-    image: "${KONG_DOCKER_TAG:-kong:latest}"
+    image: kong:1.0.3-alpine
     container_name: kong
     depends_on:
       db:
