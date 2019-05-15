@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  vault:
+    image: vault:1.1.2
+    container_name: hashicorp_vault
+    ports:
+      - 8200:8200
+      - 8201:8201
+    cap_add:
+      - IPC_LOCK
+
