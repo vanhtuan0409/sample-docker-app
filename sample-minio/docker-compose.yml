@@ -1,0 +1,66 @@
+version: "3.7"
+
+services:
+  minio1:
+    image: minio/minio
+    command:
+      - server
+      - http://minio1/data
+      - http://minio2/data
+      - http://minio3/data
+      - http://minio4/data
+    ports:
+      - 9001:9000
+    volumes:
+      - ./data1:/data
+    environment:
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+  minio2:
+    image: minio/minio
+    command:
+      - server
+      - http://minio1/data
+      - http://minio2/data
+      - http://minio3/data
+      - http://minio4/data
+    ports:
+      - 9002:9000
+    volumes:
+      - ./data2:/data
+    environment:
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+  minio3:
+    image: minio/minio
+    command:
+      - server
+      - http://minio1/data
+      - http://minio2/data
+      - http://minio3/data
+      - http://minio4/data
+    ports:
+      - 9003:9000
+    volumes:
+      - ./data3:/data
+    environment:
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+  minio4:
+    image: minio/minio
+    command:
+      - server
+      - http://minio1/data
+      - http://minio2/data
+      - http://minio3/data
+      - http://minio4/data
+    ports:
+      - 9004:9000
+    volumes:
+      - ./data4:/data
+    environment:
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
