@@ -58,3 +58,14 @@ services:
       - "./configs/keycloak-gatekeeper:/data/keycloak-gatekeeper"
     command:
       - --config=/data/keycloak-gatekeeper/config.yml
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    depends_on:
+      - keycloak
+    extra_hosts:
+      - "keycloak.local.com:${HOST_IP}"
+    volumes:
+      - "./volumes/jenkins:/var/jenkins_home"
+
