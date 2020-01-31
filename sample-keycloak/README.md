@@ -82,6 +82,7 @@ Edit `start.sh` and replace connecting network interface. Then run
 #### Client id and audience not match
 
 - https://stackoverflow.com/questions/53550321/keycloak-gatekeeper-aud-claim-and-client-id-do-not-match
+- https://issues.redhat.com/browse/KEYCLOAK-8954?focusedCommentId=13695636&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-13695636
 
 #### Cannot request client scopes
 

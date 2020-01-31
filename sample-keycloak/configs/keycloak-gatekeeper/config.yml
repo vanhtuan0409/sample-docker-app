@@ -12,8 +12,6 @@ encryption-key: vGcLt8ZUdPX5fXht
 secure-cookie: false
 upstream-url: http://echo:5678
 forbidden-page: /data/keycloak-gatekeeper/forbidden.html
-scopes:
-  - logs
 resources:
 - uri: /*
   roles:
