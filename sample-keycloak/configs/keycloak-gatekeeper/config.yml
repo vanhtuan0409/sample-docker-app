@@ -1,4 +1,4 @@
-discovery-url: http://keycloak.local.com:8080/auth/realms/Foody
+discovery-url: http://keycloak.local.com/auth/realms/Foody
 client-id: echo-app
 client-secret: a40c3f3d-0946-4625-89cf-4fb7db383556
 listen: 0.0.0.0:4444

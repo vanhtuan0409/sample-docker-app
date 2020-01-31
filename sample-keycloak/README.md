@@ -2,11 +2,20 @@
 
 ### Bootstrap
 
+Edit `start.sh` and replace connecting network interface. Then run
+
 ```sh
-docker-compose up -d
+./start.sh
 ```
 
 ### Getting started
+
+#### Prepare environment
+
+- Set `/etc/hosts` with entry `127.0.0.1 keycloak.local.com`
+- Modify docker-compose with appropriate DNS if does not use `keycloak.local.com`
+
+#### Social login
 
 - Adding 1 new Realm
 
@@ -30,5 +39,5 @@ docker-compose up -d
 #### Keycloak behind a proxy
 
 - Need to add 2 environment variable:
-- `KEYCLOAK_FRONTEND_URL`: pointing to public entry of keycloak (in this case the public DNS/port of the proxy)
+  - `KEYCLOAK_FRONTEND_URL`: pointing to public entry of keycloak (in this case the public DNS/port of the proxy)
   - `PROXY_ADDRESS_FORWARDING`: need to be set to true
