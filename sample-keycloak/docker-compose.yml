@@ -39,6 +39,9 @@ services:
   nginx:
     image: nginx
     container_name: nginx
+    depends_on:
+      - keycloak
+      - echo
     ports:
       - 80:80
     volumes:
@@ -47,6 +50,8 @@ services:
   auth_proxy:
     image: quay.io/keycloak/keycloak-gatekeeper
     container_name: auth_proxy
+    depends_on:
+      - keycloak
     extra_hosts:
       - "keycloak.local.com:${HOST_IP}"
     volumes:
