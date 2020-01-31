@@ -1,0 +1,21 @@
+discovery-url: http://keycloak.local.com:8080/auth/realms/Foody
+client-id: echo-app
+client-secret: a40c3f3d-0946-4625-89cf-4fb7db383556
+listen: 0.0.0.0:4444
+enable-refresh-tokens: true
+enable-logging: true
+verbose: true
+enable-encrypted-token: false
+redirection-url: http://localhost
+encryption-key: vGcLt8ZUdPX5fXht
+secure-cookie: false
+upstream-url: http://echo:5678
+forbidden-page: /data/keycloak-gatekeeper/forbidden.html
+scopes:
+  - roles
+resources:
+- uri: /*
+  groups:
+    - /dev
+  roles:
+    - logs:human

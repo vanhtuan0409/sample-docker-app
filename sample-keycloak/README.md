@@ -18,6 +18,9 @@ docker-compose up -d
 - Adding 1 new Client:
   - Each client represent an app that will integrate with Keycloak. For example: logs, k8s dashboard, moltres, .... So you need to create a difference client for each app
 
+- Changing `Client/Access Type` to `confidential` then Save
+  - `Credentials` tab will appear after saved
+
 ### Previous issues
 
 #### Keycloak failed to connect MySQL
