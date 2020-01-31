@@ -54,6 +54,15 @@ Edit `start.sh` and replace connecting network interface. Then run
 
 - Follow the example config of Keycloak Gatekeeper
 
+#### ACL
+
+- Role: usually represent an ability to access something, priviledges, ...
+  - Realm role: global role. For example: test-accessible, qa-accessible,...
+  - Client role: client specific role. For example: logs:viewer, k8s:dashboard,...
+- Group: usually represent a group of user
+- We usually create a group of user and attach roles to user group
+
+
 ### Previous issues
 
 #### Keycloak failed to connect MySQL
@@ -69,3 +78,13 @@ Edit `start.sh` and replace connecting network interface. Then run
 #### Keycloak IdP no access token
 
 - Because of invalid scopes setting on Keycloak Gatekeeper
+
+#### Client id and audience not match
+
+- https://stackoverflow.com/questions/53550321/keycloak-gatekeeper-aud-claim-and-client-id-do-not-match
+
+#### Cannot request client scopes
+
+- Add client scopes as `Optional Client Scopes` in Client setting
+
+![client_scope](resources/client_scope.png)
