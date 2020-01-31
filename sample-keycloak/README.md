@@ -12,6 +12,18 @@ Edit `start.sh` and replace connecting network interface. Then run
 
 ![flow](resources/flow.png)
 
+1. User enter `localhost` for accessing Echo app
+  1.1. Nginx forwarding request to Keycloak Gatekeeper
+2. Keycloak Gatekeeper check for Client cookie to see if it login.
+  2.1. Gatekeeper forward client to Keycloak Idp if not login
+3. Keycloak Idp forward client to Google
+4. Google return client back to Keycloak
+  4.1. Keycloak check if user is new or not. If new user then register client as Keycloak user ([first broker login flow](https://github.com/keycloak/keycloak-documentation/blob/master/server_admin/topics/identity-broker/first-login-flow.adoc))
+5. Keycloak return client back to Gatekeeper
+  5.1. Gatekeeper check for scopes, groups, ACL, ...
+  5.2. Gatekeeper set necessary cookie
+6. Gatekeeper proxy request to upstreap app
+
 ### Getting started
 
 #### Prepare environment
