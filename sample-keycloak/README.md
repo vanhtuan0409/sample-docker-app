@@ -62,6 +62,22 @@ Edit `start.sh` and replace connecting network interface. Then run
 - Group: usually represent a group of user
 - We usually create a group of user and attach roles to user group
 
+#### Integrate with Jenkins
+
+- Install Jenkins's Keycloak Plugin (for some reason, OIDC plugins does not work well with keycloak)
+- Create a new Keycloak Jenkins's client (should be `public` type)
+- Go to Manage Jenkins > Configure System
+  - Enter Keycloak client Json
+- Go to Manage Jenkins > Configure Global Security
+  - Select Security Realm > Keycloak Authentication Plugin
+- Select your preference Authorization mode
+  - Note: Keycloak `Realm Role` will be converted into Jenkins authories (which can be view in `/whoAmI/` after login into Jenkins)
+  - Cannot find a way to use Keycloak `Client Role`
+  - You can config authorization based on Username and Authorities (Groups)
+
+![jenkins_authorities](resources/jenkins_authorities.png)
+
+https://stackoverflow.com/questions/56042425/how-to-set-role-based-login-for-jenkins-in-keycloak
 
 ### Previous issues
 
@@ -89,3 +105,7 @@ Edit `start.sh` and replace connecting network interface. Then run
 - Add client scopes as `Optional Client Scopes` in Client setting
 
 ![client_scope](resources/client_scope.png)
+
+#### Update keycloak groups does not affect Jenkins groups
+
+- User need to logout and login again to see Groups effect
