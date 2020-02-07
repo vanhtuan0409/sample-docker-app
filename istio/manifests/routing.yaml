@@ -1,0 +1,69 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: helloworld-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: helloworld-svc
+spec:
+  host: helloworld.default.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 64
+        connectTimeout: 10ms
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+  port:
+    number: 5000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: helloworld
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - helloworld-gateway
+  http:
+  - match:
+    - uri:
+        exact: /hello/v1
+    rewrite:
+      uri: /hello
+    route:
+    - destination:
+        host: helloworld.default.svc.cluster.local
+        subset: v1
+  - match:
+    - uri:
+        exact: /hello/v2
+    rewrite:
+      uri: /hello
+    route:
+    - destination:
+        host: helloworld.default.svc.cluster.local
+        subset: v2
