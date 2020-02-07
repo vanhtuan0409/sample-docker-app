@@ -51,13 +51,19 @@ spec:
   http:
   - match:
     - uri:
-        exact: /hello
+        exact: /hello/v1
+    rewrite:
+      uri: /hello
     route:
     - destination:
         host: helloworld.default.svc.cluster.local
         subset: v1
-      weight: 50
+  - match:
+    - uri:
+        exact: /hello/v2
+    rewrite:
+      uri: /hello
+    route:
     - destination:
         host: helloworld.default.svc.cluster.local
         subset: v2
-      weight: 50
