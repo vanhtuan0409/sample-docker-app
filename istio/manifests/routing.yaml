@@ -12,6 +12,8 @@ spec:
       protocol: HTTP
     hosts:
     - "helloworld.istio.com"
+    tls:
+      httpsRedirect: true
   - port:
       number: 443
       name: https
