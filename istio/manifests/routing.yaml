@@ -67,3 +67,15 @@ spec:
     - destination:
         host: helloworld.default.svc.cluster.local
         subset: v2
+  - match:
+    - uri:
+        prefix: /hello
+    route:
+    - destination:
+        host: helloworld.default.svc.cluster.local
+        subset: v1
+      weight: 50
+    - destination:
+        host: helloworld.default.svc.cluster.local
+        subset: v2
+      weight: 50
