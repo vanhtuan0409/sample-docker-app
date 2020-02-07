@@ -1,2 +1,4 @@
 container
 volumes
+
+istio/resources/certs/

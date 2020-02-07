@@ -25,3 +25,11 @@ Client --> Gateway --> VirtualService --> (DestinationRule) --> Destination
   - Istio Gateway for listening on port 80
   - Istio VirtualService for represent `helloworld` and will forward to `helloworld.default.svc.cluster.local`
   - Istio DestinationRule will declare 2 subset for v1 and v2. Which is applied on `helloworld.default.svc.cluster.local`
+
+### TLS
+
+- Enable ingress `SDS`
+- Generate a certificate using `scripts/cert_gen.sh`
+- Create K8s secret using `kubectl -n istio-system create secret tls helloworld-cert --cert <path> --key <path>`
+  - Note: secret must be created within Namespace `istio-system`
+- Editing `Gateway` to add TLS mode

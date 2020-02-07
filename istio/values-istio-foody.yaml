@@ -17,6 +17,8 @@ gateways:
     enabled: false
   istio-ingressgateway:
     autoscaleEnabled: false
+    sds:
+      enabled: true
   # other-ingressgateway:
   #   enabled: true
   #   autoscaleEnabled: false

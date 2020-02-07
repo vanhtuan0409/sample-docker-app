@@ -11,7 +11,16 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "helloworld.istio.com"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: "helloworld-cert"
+    hosts:
+    - "helloworld.istio.com"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -45,7 +54,7 @@ metadata:
   name: helloworld
 spec:
   hosts:
-  - "*"
+  - "helloworld.istio.com"
   gateways:
   - helloworld-gateway
   http:
