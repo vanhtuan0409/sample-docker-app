@@ -28,7 +28,8 @@ spec:
       destination_ip: destination.ip | ip("0.0.0.0")
       destination_version: destination.labels["version"] | "unknown"
       origin_ip: origin.ip | ip("0.0.0.0")
-      xff_ip: request.headers["X-Forwarded-For"]
+      xff_ip: request.headers["x-forwarded-for"] | "0.0.0.0"
+      real_ip: request.headers["x-real-ip"] | "0.0.0.0"
       responseCode: response.code | 0
       responseSize: response.size | 0
       latency: response.duration | "0ms"
