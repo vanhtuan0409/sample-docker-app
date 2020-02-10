@@ -18,7 +18,6 @@ metadata:
 spec:
   compiledTemplate: listentry
   params:
-    # value: origin.ip | ip("0.0.0.0")
     value: request.headers["x-forwarded-for"] | "0.0.0.0"
 ---
 apiVersion: config.istio.io/v1alpha2
@@ -27,8 +26,7 @@ metadata:
   name: checkip
   namespace: istio-system
 spec:
-  match: destination.labels["app"] == "helloworld" && destination.labels["version"] == "v2"
-  # match: source.labels["istio"] == "ingressgateway"
+  match: request.host == "helloworld.istio.com" && request.path == "/hello/v1"
   actions:
   - handler: blacklistip
     instances: [ sourceip ]

@@ -37,4 +37,5 @@ Client --> Gateway --> VirtualService --> (DestinationRule) --> Destination
 ### IP Restricting
 
 - Rule/Handler/Instance that is created in 1 specific namespace will only affect Envoy proxy which is deployed into that namespace (For example: rules that are created in default ns will only affect envoy sidecar on the default ns. Rules created in istio-system may affect Envoy Ingressgateway)
-- For Ip whitelisting/blacklisting, we need an envoy sidecar deployed on each app. Ingress only block Global level traffic, no method for configration service specific level
+- For Ip whitelisting/blacklisting on **destination**, we need an envoy sidecar deployed on each app. Ingress only block Global level traffic, no method for configration service specific level
+- Can use request host/path instead

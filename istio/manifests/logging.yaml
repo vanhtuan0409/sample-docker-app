@@ -30,6 +30,8 @@ spec:
       origin_ip: origin.ip | ip("0.0.0.0")
       xff_ip: request.headers["x-forwarded-for"] | "0.0.0.0"
       real_ip: request.headers["x-real-ip"] | "0.0.0.0"
+      request_host: request.host | "unknown"
+      request_path: request.path | "unknown"
       responseCode: response.code | 0
       responseSize: response.size | 0
       latency: response.duration | "0ms"
@@ -43,7 +45,6 @@ metadata:
   namespace: istio-system
 spec:
   match: "true" # match for all requests
-  # match: destination.labels["app"] == "helloworld" && destination.labels["version"] == "v2"
   actions:
    - handler: newloghandler
      instances:
