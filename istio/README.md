@@ -33,3 +33,8 @@ Client --> Gateway --> VirtualService --> (DestinationRule) --> Destination
 - Create K8s secret using `kubectl -n istio-system create secret tls helloworld-cert --cert <path> --key <path>`
   - Note: secret must be created within Namespace `istio-system`
 - Editing `Gateway` to add TLS mode
+
+### IP Restricting
+
+- Rule/Handler/Instance that is created in 1 specific namespace will only affect Envoy proxy which is deployed into that namespace (For example: rules that are created in default ns will only affect envoy sidecar on the default ns. Rules created in istio-system may affect Envoy Ingressgateway)
+- For Ip whitelisting/blacklisting, we need an envoy sidecar deployed on each app. Ingress only block Global level traffic, no method for configration service specific level
