@@ -14,32 +14,17 @@ server:
   hostname: 127.0.0.1
   staticdir: /tmp/var/lib/gobeansdb
 mc:
-  max_key_len: 250
-  max_req: 16
-  body_max_str: 50M
-  body_big_str: 5M
-  body_c_str: 4K
-  flush_max_str: 100M
+  body_c_str: 0
 hstore:
   data:
-    flush_interval: 60
-    flush_wake_str: 10M
-    datafile_max_str: 4000M
-    check_vhash: true
-    no_gc_days: 7
-    not_compress:
-      "audio/mpeg": true
-      "audio/wave": true
-      "audio/ogg": true
-      "audio/midi": true
-  hint:
-    hint_no_merged: true
-    hint_split_cap_str: 1M
-    hint_index_interval_str: 32K
-    hint_merge_interval: 5
-  htree:
-    tree_height: 7
-    tree_dump : 3
+    flush_interval: 0
+    flush_wake_str: 0
+    no_gc_days: 0
   local:
     homes:
-    - /var/lib/beansdb
+    - ./volumes/testdb
+  htree:
+    tree_height: 3
+    tree_dump : 1
+  hint:
+    hint_no_merged: false
