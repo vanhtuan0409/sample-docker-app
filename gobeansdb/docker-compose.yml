@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  zk:
+    image: zookeeper
+    restart: always
+    ports:
+      - 2181:2181
+    volumes:
+      - ./volumes/zk/data:/data
+      - ./volumes/zk/datalog:/datalog
+
+  webui:
+    image: elkozmon/zoonavigator
+    restart: always
+    ports:
+      - 9000:9000
+    environment:
+      HTTP_PORT: 9000
+

@@ -1,0 +1,45 @@
+# for doubandb
+# should include all configurable fields
+server:
+  zkservers:
+    - localhost:2181
+  zkpath: "/beansdb/test"
+  listen: 0.0.0.0
+  port: 7900
+  webport: 7903
+  threads: 4
+  errorlog: ./volumes/beansdb/error.log
+  accesslog: ./volumes/beansdb/access.log
+  analysislog: ./volumes/beansdb/analysis.log
+  hostname: 127.0.0.1
+  staticdir: /tmp/var/lib/gobeansdb
+mc:
+  max_key_len: 250
+  max_req: 16
+  body_max_str: 50M
+  body_big_str: 5M
+  body_c_str: 4K
+  flush_max_str: 100M
+hstore:
+  data:
+    flush_interval: 60
+    flush_wake_str: 10M
+    datafile_max_str: 4000M
+    check_vhash: true
+    no_gc_days: 7
+    not_compress:
+      "audio/mpeg": true
+      "audio/wave": true
+      "audio/ogg": true
+      "audio/midi": true
+  hint:
+    hint_no_merged: true
+    hint_split_cap_str: 1M
+    hint_index_interval_str: 32K
+    hint_merge_interval: 5
+  htree:
+    tree_height: 7
+    tree_dump : 3
+  local:
+    homes:
+    - /var/lib/beansdb

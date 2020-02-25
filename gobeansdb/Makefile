@@ -1,0 +1,2 @@
+run:
+	gobeansdb -confdir ./configs
