@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  server:
+    image: wernight/trafficserver
+    container_name: traffic_server
+    ports:
+      - 8080:8080
+    extra_hosts:
+      - "imgproxy.test.now.vn:103.60.17.112"
+    volumes:
+      - "./configs/cache.config:/usr/local/etc/trafficserver/cache.config"
+      - "./configs/remap.config:/usr/local/etc/trafficserver/remap.config"
+      - "./configs/plugin.config:/usr/local/etc/trafficserver/plugin.config"
+      - "./configs/logging.config:/usr/local/etc/trafficserver/logging.config"
+      - "./configs/records.config:/usr/local/etc/trafficserver/records.config"
+      - "./configs/storage.config:/usr/local/etc/trafficserver/storage.config"
