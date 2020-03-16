@@ -1,0 +1,48 @@
+FROM ubuntu:latest
+
+# Update the package repository
+RUN set -x \
+ && DEBIAN_FRONTEND=noninteractive apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        curl \
+        locales \
+        build-essential \
+        bzip2 \
+        libssl-dev \
+        libxml2 \
+        libxml2-dev \
+        libpcre3 \
+        libpcre3-dev \
+        tcl \
+        tcl-dev \
+        libboost-dev \
+    # Configure locale
+ && export LANGUAGE=en_US.UTF-8 \
+ && export LANG=en_US.UTF-8 \
+ && export LC_ALL=en_US.UTF-8 \
+ && locale-gen en_US.UTF-8 \
+ && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales \
+    # Get ATS and build
+    # http://www-eu.apache.org/dist/trafficserver/
+ && mkdir /tmp/trafficserver \
+ && cd /tmp/trafficserver \
+ && curl -L https://mirror.downloadvn.com/apache/trafficserver/trafficserver-8.0.6.tar.bz2 | tar -xj --strip-components 1 \
+ && ./configure \
+ && make install \
+ && cd / \
+    # Clean-up
+ && apt-get purge --auto-remove -y \
+        curl \
+        build-essential \
+        bzip2 \
+        libssl-dev \
+        libxml2-dev \
+        libpcre3-dev \
+        tcl-dev \
+        libboost-dev \
+ && apt-get clean \
+ && rm -rf /tmp/* /var/lib/apt/lists/*
+
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/bin/traffic_server"]

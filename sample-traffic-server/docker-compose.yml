@@ -2,7 +2,11 @@ version: "3.7"
 
 services:
   server:
-    image: wernight/trafficserver
+    # image: wernight/trafficserver
+    image: ats:8.0.6
+    build:
+      context: ./build
+      dockerfile: Dockerfile.8.0.6
     container_name: traffic_server
     ports:
       - 8080:8080
@@ -15,3 +19,5 @@ services:
       - "./configs/logging.config:/usr/local/etc/trafficserver/logging.config"
       - "./configs/records.config:/usr/local/etc/trafficserver/records.config"
       - "./configs/storage.config:/usr/local/etc/trafficserver/storage.config"
+      - "./volumes/trafficserver:/usr/local/var/trafficserver"
+      - "./volumes/logs:/usr/local/var/log/trafficserver"
