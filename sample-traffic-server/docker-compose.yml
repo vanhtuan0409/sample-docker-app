@@ -20,4 +20,3 @@ services:
       - "./configs/records.config:/usr/local/etc/trafficserver/records.config"
       - "./configs/storage.config:/usr/local/etc/trafficserver/storage.config"
       - "./volumes/trafficserver:/usr/local/var/trafficserver"
-      - "./volumes/logs:/usr/local/var/log/trafficserver"
