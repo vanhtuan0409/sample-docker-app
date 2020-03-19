@@ -3,10 +3,28 @@ version: '3'
 services:
   vault:
     image: vault:latest
-    container_name: hashicorp_vault
+    container_name: vault
+    command:
+      - server
+      - -config
+      - /opt/vault.hcl
+    volumes:
+      - ./vault.hcl:/opt/vault.hcl
     ports:
       - 8200:8200
       - 8201:8201
+    depends_on:
+      - mysql
     cap_add:
       - IPC_LOCK
 
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootPassword
+      MYSQL_DATABASE: vault
+      MYSQL_USER: vault
+      MYSQL_PASSWORD: password
