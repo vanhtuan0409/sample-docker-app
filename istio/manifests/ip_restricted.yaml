@@ -1,33 +1,23 @@
-apiVersion: config.istio.io/v1alpha2
-kind: handler
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
 metadata:
-  name: blacklistip
+  name: ingress-policy
   namespace: istio-system
 spec:
-  compiledAdapter: listchecker
-  params:
-    overrides: ["192.168.99.1"]
-    blacklist: true
-    entryType: IP_ADDRESSES
----
-apiVersion: config.istio.io/v1alpha2
-kind: instance
-metadata:
-  name: sourceip
-  namespace: istio-system
-spec:
-  compiledTemplate: listentry
-  params:
-    value: request.headers["x-forwarded-for"] | "0.0.0.0"
----
-apiVersion: config.istio.io/v1alpha2
-kind: rule
-metadata:
-  name: checkip
-  namespace: istio-system
-spec:
-  match: request.host == "helloworld.istio.com" && request.path == "/hello/v1"
-  actions:
-  - handler: blacklistip
-    instances: [ sourceip ]
----
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+  action: DENY
+  rules:
+  - from:
+    - source:
+       notIpBlocks: ["192.168.99.1"]
+    to:
+    - operation:
+        hosts:
+          - "helloworld.istio.com"
+        paths:
+          - /hello/v1
+        namespaces:
+          - default
+

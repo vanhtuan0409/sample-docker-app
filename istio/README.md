@@ -3,11 +3,7 @@
 ### Installation
 
 ```
-helm repo add istio.io https://storage.googleapis.com/istio-release/releases/1.4.3/charts/
-kubectl create namespace istio-system
-helm template istio.io/istio-init --namespace istio-system | kubectl apply -f -
-kubectl -n istio-system wait --for=condition=complete job --all
-helm template istio.io/istio --values values-istio-foody.yaml --namespace istio-system | kubectl apply -f -
+istioctl manifest apply -f istio.yml
 ```
 
 ### Routing
@@ -36,6 +32,5 @@ Client --> Gateway --> VirtualService --> (DestinationRule) --> Destination
 
 ### IP Restricting
 
-- Rule/Handler/Instance that is created in 1 specific namespace will only affect Envoy proxy which is deployed into that namespace (For example: rules that are created in default ns will only affect envoy sidecar on the default ns. Rules created in istio-system may affect Envoy Ingressgateway)
-- For Ip whitelisting/blacklisting on **destination**, we need an envoy sidecar deployed on each app. Ingress only block Global level traffic, no method for configration service specific level
-- Can use request host/path instead
+- Use [Authorization Policy](https://istio.io/docs/reference/config/security/authorization-policy/)
+- **Notes**: dont use action `ALLOW` as it will default block all traffic into ingress controller
