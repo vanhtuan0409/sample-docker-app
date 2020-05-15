@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: helloworld-rule
+spec:
+  host: hello
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 16
+        connectTimeout: 10ms
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s

@@ -35,3 +35,10 @@ Virtual Service is a routing unit for mapping http request to a target destinati
 For detail on how matching configs are, please reference [official docs](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute)
 
 *Notes:* Virtual Service aren't required to be in the same namespace with Gateway
+
+### Destination and Destination Rules and ServiceEntry
+
+Destination is **a network addressable service** for routing request to, lookup in Istio service registry. By default, Istio will import all platform's service registry (K8s service) into Istio own service registry
+  - Istio service registry = platform's service registry (k8s service) + Istio ServiceEntry
+
+Destination Rules is policies that apply **after the routing logic** has occured. These rules are mostly for connection pool and load balancing algorithm
