@@ -27,3 +27,11 @@ Gateway CRD act as HTTP/TCP Listener to accept traffic, no routing logic is impl
 ```
 kubectl apply -f manifests/gateway.yaml
 ```
+
+### Virtual Service
+
+Virtual Service is a routing unit for mapping http request to a target destination. When define a Virtual Service, you should specify explicitly which Gateway will host this Virtual Service
+
+For detail on how matching configs are, please reference [official docs](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute)
+
+*Notes:* Virtual Service aren't required to be in the same namespace with Gateway
