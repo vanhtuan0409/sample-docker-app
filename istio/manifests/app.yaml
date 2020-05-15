@@ -1,42 +1,42 @@
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: httpbin
+---
+apiVersion: v1
 kind: Service
 metadata:
-  name: helloworld
-  namespace: default
+  name: httpbin
   labels:
-    app: helloworld
+    app: httpbin
 spec:
   ports:
-  - port: 5000
-    name: http
+  - name: http
+    port: 8000
+    targetPort: 80
   selector:
-    app: helloworld
+    app: httpbin
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: helloworld-v1
-  namespace: default
-  labels:
-    version: v1
+  name: httpbin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: helloworld
+      app: httpbin
       version: v1
   template:
     metadata:
       labels:
-        app: helloworld
+        app: httpbin
         version: v1
     spec:
+      serviceAccountName: httpbin
       containers:
-      - name: helloworld
-        image: docker.io/istio/examples-helloworld-v1
-        resources:
-          requests:
-            cpu: "100m"
-        imagePullPolicy: IfNotPresent #Always
+      - image: docker.io/kennethreitz/httpbin
+        imagePullPolicy: IfNotPresent
+        name: httpbin
         ports:
-        - containerPort: 5000
+        - containerPort: 80

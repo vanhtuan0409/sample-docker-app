@@ -1,0 +1,21 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ingress-policy
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+      proxy-group: proxy-group-1
+  action: DENY
+  rules:
+  - from:
+    - source:
+       ipBlocks: ["172.18.0.1"]
+    to:
+    - operation:
+        hosts:
+        - "httpbin.example.local"
+        paths:
+        - "/status*"

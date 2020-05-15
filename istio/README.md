@@ -42,3 +42,16 @@ Destination is **a network addressable service** for routing request to, lookup 
   - Istio service registry = platform's service registry (k8s service) + Istio ServiceEntry
 
 Destination Rules is policies that apply **after the routing logic** has occured. These rules are mostly for connection pool and load balancing algorithm
+
+### Authorization
+
+Authorization is an ACL for accessing services. When define an Authorization, you must specific **selector** for select which Istio Ingress Deployment will be affected
+
+The order of `ACTION` taken as follow:
+
+```
+1/ If there are any DENY policies that match the request, deny the request.
+2/ If there are no ALLOW policies for the workload, allow the request.
+3/ If any of the ALLOW policies match the request, allow the request.
+4/ Deny the request.
+```
