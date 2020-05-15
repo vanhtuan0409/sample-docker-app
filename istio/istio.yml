@@ -5,11 +5,16 @@ spec:
   profile: minimal
   components:
     ingressGateways:
-    - enabled: true
-      name: istio-ingressgateway
+    - name: my-custom-istio-ingressgateway
+      enabled: true
+      label:
+        proxy-group: proxy-group-1
   values:
     gateways:
       istio-ingressgateway:
         autoscaleEnabled: false
     pilot:
       autoscaleEnabled: false
+    global:
+      defaultPodDisruptionBudget:
+        enabled: false
