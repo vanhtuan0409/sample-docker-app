@@ -45,7 +45,7 @@ Destination Rules is policies that apply **after the routing logic** has occured
 
 ### Authorization
 
-Authorization is an ACL for accessing services. When define an Authorization, you must specific **selector** for select which Istio Ingress Deployment will be affected
+Authorization is an ACL for accessing services. When define an Authorization, you must specific **selector** for select which Istio Ingress Deployment will be affected. Because of selector, so generally, Authorization object must be in the same namespace with affected Envoy
 
 The order of `ACTION` taken as follow:
 
