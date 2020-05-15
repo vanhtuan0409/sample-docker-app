@@ -13,3 +13,17 @@ Istio come with a special [IstioOperator API](https://istio.io/docs/setup/instal
 ```
 istioctl manifest generate -f istio.yml | kubectl apply -f -
 ```
+
+*Notes:* default installation will create a auto-generated Gateway object. This should be replaced with your custom Gateway
+
+### Gateway
+
+Gateway CRD act as HTTP/TCP Listener to accept traffic, no routing logic is implemented
+
+`spec.selector` section of Gateway is for select which Istio Ingress Deployment will host these listener. Usually this will match with your `istio-ingressgateway` labels. **Notes:** Gateway object and Istio Ingress Deployment must be in the same namespace
+
+`spec.servers.hosts` is not actually for routing logic. It is an ACL control for select which **Virtual Server** is allowed to received traffic from this gateway. If no special requirements, can be set as `*`
+
+```
+kubectl apply -f manifests/gateway.yaml
+```
