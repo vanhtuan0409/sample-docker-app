@@ -2,8 +2,9 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: helloworld-rule
+  namespace: default
 spec:
-  host: hello
+  host: httpbin
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN

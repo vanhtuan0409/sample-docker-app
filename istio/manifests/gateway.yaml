@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: httpbin-example-local
-  namespace: istio-system
+  namespace: proxy
 spec:
   selector:
     app: istio-ingressgateway
@@ -26,5 +26,3 @@ spec:
     tls:
       mode: SIMPLE
       credentialName: httpbin-cert
-      serverCertificate: tls.crt
-      privateKey: tls.key

@@ -67,7 +67,7 @@ bash ./cert_gen.sh {dns}
 Create TLS secret
 
 ```
-kubectl create tls httpbin-cert --cert resources/httpbin.crt --key resources/httpbin.key
+kubectl -n proxy create tls httpbin-cert --cert resources/httpbin.crt --key resources/httpbin.key
 ```
 
 *Notes:* TLS secret must be in the same namespace with Gateway
