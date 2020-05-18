@@ -7,7 +7,7 @@ spec:
   hosts:
   - "httpbin.example.local"
   gateways:
-  - istio-system/proxy-group-1-gateway
+  - istio-system/httpbin-example-local
   http:
   - match:
     - uri:

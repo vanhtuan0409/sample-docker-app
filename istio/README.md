@@ -55,3 +55,21 @@ The order of `ACTION` taken as follow:
 3/ If any of the ALLOW policies match the request, allow the request.
 4/ Deny the request.
 ```
+
+### TLS
+
+Generate TLS certs
+
+```
+bash ./cert_gen.sh {dns}
+```
+
+Create TLS secret
+
+```
+kubectl create tls httpbin-cert --cert resources/httpbin.crt --key resources/httpbin.key
+```
+
+*Notes:* TLS secret must be in the same namespace with Gateway
+
+Apply Gateway with TLS option

@@ -13,6 +13,8 @@ spec:
     gateways:
       istio-ingressgateway:
         autoscaleEnabled: false
+        sds:
+          enabled: true
     pilot:
       autoscaleEnabled: false
     global:
