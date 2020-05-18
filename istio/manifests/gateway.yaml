@@ -25,4 +25,5 @@ spec:
       protocol: https
     tls:
       mode: SIMPLE
-      credentialName: httpbin-cert
+      # credentialName: httpbin-cert
+      credentialName: example-local-cert

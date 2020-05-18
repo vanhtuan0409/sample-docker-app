@@ -15,6 +15,17 @@ spec:
       name: http-grafana
       number: 80
       protocol: http
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - 'grafana.example.local'
+    port:
+      name: https-grafana
+      number: 443
+      protocol: https
+    tls:
+      mode: SIMPLE
+      credentialName: example-local-cert
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
