@@ -18,6 +18,10 @@ spec:
           enabled: true
     pilot:
       autoscaleEnabled: false
+    prometheus:
+      enabled: true
+    grafana:
+      enabled: true
     global:
       defaultPodDisruptionBudget:
         enabled: false
