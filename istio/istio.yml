@@ -3,6 +3,16 @@ kind: IstioOperator
 spec:
   # Install Istio with `minimal` profile
   profile: minimal
+  meshConfig:
+    accessLogFile: "/dev/stdout"
+    accessLogEncoding: JSON
+  addonComponents:
+    kiali:
+      enabled: true
+    prometheus:
+      enabled: true
+    grafana:
+      enabled: true
   components:
     ingressGateways:
     - name: my-custom-istio-ingressgateway
@@ -18,13 +28,6 @@ spec:
           enabled: true
     pilot:
       autoscaleEnabled: false
-    prometheus:
-      enabled: true
-    grafana:
-      enabled: true
     global:
       defaultPodDisruptionBudget:
         enabled: false
-      proxy:
-        accessLogFile: "/dev/stdout"
-        accessLogEncoding: JSON
