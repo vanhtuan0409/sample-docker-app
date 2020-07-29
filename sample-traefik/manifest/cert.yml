@@ -12,6 +12,10 @@ spec:
     - http01:
        ingress:
          serviceType: ClusterIP
+         ingressTemplate:
+           metadata:
+             annotations:
+               traefik.ingress.kubernetes.io/router.entrypoints: web
 ---
 apiVersion: cert-manager.io/v1beta1
 kind: Certificate
