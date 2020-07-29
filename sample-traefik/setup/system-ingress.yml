@@ -18,3 +18,25 @@ spec:
     services:
     - name: api@internal
       kind: TraefikService
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: now-traefik-metrics
+  annotations:
+    helm.sh/hook: "post-install,post-upgrade"
+  labels:
+    app.kubernetes.io/name: traefik
+    helm.sh/chart: traefik-8.9.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: now
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: PathPrefix(`/metrics`)
+    kind: Rule
+    services:
+    - name: prometheus@internal
+      kind: TraefikService
+

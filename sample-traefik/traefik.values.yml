@@ -5,7 +5,8 @@ image:
 deployment:
   replicas: 1
 
-additionalArguments: []
+additionalArguments:
+  - "--metrics.prometheus=true"
 
 ports:
   es:
