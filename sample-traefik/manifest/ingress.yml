@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: echo-service
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`test.example.com`)
+      services:
+        - kind: Service
+          name: echo-service
+          port: 80

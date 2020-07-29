@@ -1,0 +1,22 @@
+image:
+  name: traefik
+  tag: 2.2.8
+
+deployment:
+  replicas: 1
+
+additionalArguments: []
+
+ports:
+  es:
+    port: 7979
+    expose: true
+    exposedPort: 7979
+    protocol: TCP
+
+ingressRoute:
+  dashboard:
+    enabled: false
+
+# service:
+#   type: ClusterIP
