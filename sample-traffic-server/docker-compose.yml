@@ -20,9 +20,9 @@ services:
       - "./configs/compress.config:/usr/local/etc/trafficserver/compress.config"
       - "./volumes/trafficserver:/usr/local/var/trafficserver"
 
-  app:
+  app1:
     image: joseluisq/static-web-server
-    container_name: ats-app
+    container_name: ats-app-1
     environment:
       - SERVER_NAME=ats-app
       - SERVER_HOST=0.0.0.0
@@ -32,5 +32,16 @@ services:
       - SERVER_LOG_LEVEL=info
     volumes:
       - ./app-static:/public
-    ports:
-      - 5678:5678
+
+  app2:
+    image: joseluisq/static-web-server
+    container_name: ats-app-2
+    environment:
+      - SERVER_NAME=ats-app
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=5678
+      - SERVER_ROOT=/public
+      - SERVER_ASSETS=/public/assets
+      - SERVER_LOG_LEVEL=info
+    volumes:
+      - ./app-static:/public

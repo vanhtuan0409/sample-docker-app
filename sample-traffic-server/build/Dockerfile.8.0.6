@@ -27,7 +27,7 @@ RUN set -x \
  && mkdir /tmp/trafficserver \
  && cd /tmp/trafficserver \
  && curl -L https://mirror.downloadvn.com/apache/trafficserver/trafficserver-8.0.6.tar.bz2 | tar -xj --strip-components 1 \
- && ./configure \
+ && ./configure --enable-experimental-plugins \
  && make install \
  && cd / \
     # Clean-up
