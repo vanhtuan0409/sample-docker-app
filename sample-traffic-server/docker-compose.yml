@@ -17,6 +17,7 @@ services:
       - "./configs/logging.config:/usr/local/etc/trafficserver/logging.config"
       - "./configs/records.config:/usr/local/etc/trafficserver/records.config"
       - "./configs/storage.config:/usr/local/etc/trafficserver/storage.config"
+      - "./configs/compress.config:/usr/local/etc/trafficserver/compress.config"
       - "./volumes/trafficserver:/usr/local/var/trafficserver"
 
   app:
