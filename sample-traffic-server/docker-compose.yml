@@ -10,8 +10,6 @@ services:
     container_name: traffic_server
     ports:
       - 8080:8080
-    extra_hosts:
-      - "imgproxy.test.now.vn:103.60.17.112"
     volumes:
       - "./configs/cache.config:/usr/local/etc/trafficserver/cache.config"
       - "./configs/remap.config:/usr/local/etc/trafficserver/remap.config"
