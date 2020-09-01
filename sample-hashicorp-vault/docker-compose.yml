@@ -13,6 +13,7 @@ services:
     ports:
       - 8200:8200
       - 8201:8201
+      - 8250:8250
     depends_on:
       - mysql
     cap_add:
