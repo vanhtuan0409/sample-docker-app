@@ -2,3 +2,5 @@ container
 volumes
 
 istio/resources/certs/
+
+redis-cluster/data/

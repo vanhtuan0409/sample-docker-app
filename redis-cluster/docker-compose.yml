@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  haproxy:
+    image: haproxy:1.7.12
+    volumes:
+      - ./conf/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    network_mode: host
+
+  # Redis sentinel
+  redis1:
+    image: redis:6-alpine
+    command:
+      - redis-server
+      - --port 6001
+    network_mode: host
+
+  redis2:
+    image: redis:6-alpine
+    command:
+      - redis-server
+      - --port 6002
+    network_mode: host
+
+  sentinel1:
+    image: redis:6-alpine
+    entrypoint: ""
+    command:
+      - redis-server
+      - /usr/local/etc/redis/sentinel.conf
+      - --sentinel
+      - --port 8001
+    volumes:
+      - ./conf/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+    network_mode: host
+
+
+  # Redis sentinel
+  # redis1:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6001
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes1.conf:/data/nodes.conf
+  #   network_mode: host
+
+  # redis2:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6002
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes2.conf:/data/nodes.conf
+  #   network_mode: host
+
+  # redis3:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6003
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes3.conf:/data/nodes.conf
+  #   network_mode: host
+
+  # redis4:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6004
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes4.conf:/data/nodes.conf
+  #   network_mode: host
+
+  # redis5:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6005
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes5.conf:/data/nodes.conf
+  #   network_mode: host
+
+  # redis6:
+  #   image: redis:6-alpine
+  #   command:
+  #     - redis-server
+  #     - /opt/redis/redis.conf
+  #     - --port 6006
+  #   volumes:
+  #     - ./conf/redis.conf:/opt/redis/redis.conf
+  #     - ./data/nodes6.conf:/data/nodes.conf
+  #   network_mode: host
