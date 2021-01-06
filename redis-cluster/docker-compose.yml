@@ -1,10 +1,16 @@
 version: "3.8"
 
 services:
-  haproxy:
-    image: haproxy:1.7.12
+  # haproxy:
+  #   image: haproxy:1.7.12
+  #   volumes:
+  #     - ./conf/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  #   network_mode: host
+
+  envoy:
+    image: envoyproxy/envoy:v1.16.2
     volumes:
-      - ./conf/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
     network_mode: host
 
   # Redis sentinel
