@@ -14,8 +14,8 @@ static_resources:
           settings:
             op_timeout: 0.5s
           prefix_routes:
-                      catch_all_route:
-                        cluster: redis_cluster
+            catch_all_route:
+              cluster: redis_cluster
   clusters:
   - name: redis_cluster
     connect_timeout: 1s
