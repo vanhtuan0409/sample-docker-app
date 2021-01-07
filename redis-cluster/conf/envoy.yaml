@@ -26,10 +26,45 @@ static_resources:
       endpoints:
       - lb_endpoints:
         - endpoint:
+            health_check_config:
+              port_value: 9999
             address:
               socket_address:
                 address: 127.0.0.1
                 port_value: 6001
+        - endpoint:
+            health_check_config:
+              port_value: 9999
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 6002
+    health_checks:
+      timeout: 1s
+      interval: 2s
+      unhealthy_threshold: 1
+      healthy_threshold: 1
+      event_log_path: "/dev/stdout"
+
+      # custom external health check
+      http_health_check:
+        host: 127.0.0.1
+        path: "/"
+        request_headers_to_add:
+          - header:
+              key: "X-Upstream-Addr"
+              value: "%UPSTREAM_REMOTE_ADDRESS%"
+
+      # custom_health_check:
+      #   name: envoy.health_checkers.redis
+      #   typed_config:
+      #     "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
+
+      # tcp_health_check:
+      #   send:
+      #     text: "696e666f207265706c69636174696f6e5c725c6e"
+      #   receive:
+      #     - text: "726f6c653a6d6173746572"
 admin:
   access_log_path: "/dev/null"
   address:
