@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  # haproxy:
-  #   image: haproxy:1.7.12
-  #   volumes:
-  #     - ./conf/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-  #   network_mode: host
+  haproxy:
+    image: haproxy:1.7.12
+    volumes:
+      - ./conf/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    network_mode: host
 
   envoy:
     image: envoyproxy/envoy:v1.16.2
