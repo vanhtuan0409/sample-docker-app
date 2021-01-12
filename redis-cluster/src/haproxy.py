@@ -9,13 +9,14 @@ for i in range(1,1000):
     print("Set key: {}".format(i))
     r.set(key, val)
 
-r.set('foo', 'bar')
-
-while True:
+for i in range(1,1000):
+    key = "foo{}".format(i)
+    expected_val = "bar{}".format(i)
     try:
-        val = r.get('foo')
-        print(val)
+        val = r.get(key).decode("utf-8")
+        if val == expected_val:
+            print("OK key {}".format(key))
+        else:
+            print("Not OK key {}".format(key))
     except Exception:
-        print("Error")
-    finally:
-        time.sleep(0.5)
+        print("Not OK key {}".format(key))

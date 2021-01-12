@@ -41,36 +41,57 @@ static_resources:
   - name: mymaster
     connect_timeout: 1s
     lb_policy: MAGLEV
-    # type: strict_dns # static
-    # load_assignment:
-    #   cluster_name: redis_cluster
-    #   endpoints:
-    #   - lb_endpoints:
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6001
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6002
+    type: static
+    common_lb_config:
+      consistent_hashing_lb_config:
+        use_hostname_for_hashing: true
+    load_assignment:
+      cluster_name: redis_cluster
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            health_check_config:
+              port_value: 9999
+            hostname: group1
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 6001
+        - endpoint:
+            health_check_config:
+              port_value: 9999
+            hostname: group1
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 6002
+        - endpoint:
+            health_check_config:
+              port_value: 9999
+            hostname: group2
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 6003
+        - endpoint:
+            health_check_config:
+              port_value: 9999
+            hostname: group2
+            address:
+              socket_address:
+                address: 127.0.0.1
+                port_value: 6004
     
-    type: eds
-    eds_cluster_config:
-      eds_config:
-        resource_api_version: v3
-        api_config_source:
-          api_type: grpc
-          transport_api_version: v3
-          grpc_services:
-            - envoy_grpc:
-                cluster_name: eds_sentinel
+    # type: eds
+    # eds_cluster_config:
+    #   eds_config:
+    #     resource_api_version: v3
+    #     api_config_source:
+    #       api_type: grpc
+    #       transport_api_version: v3
+    #       grpc_services:
+    #         - envoy_grpc:
+    #             cluster_name: eds_sentinel
 
     health_checks:
       timeout: 1s
@@ -79,19 +100,19 @@ static_resources:
       healthy_threshold: 1
       event_log_path: "/dev/stdout"
 
-      # http_health_check:
-      #   host: 127.0.0.1
-      #   path: "/"
-      #   request_headers_to_add:
-      #     - header:
-      #         key: "X-Upstream-Addr"
-      #         value: "%UPSTREAM_REMOTE_ADDRESS%"
+      http_health_check:
+        host: 127.0.0.1
+        path: "/"
+        request_headers_to_add:
+          - header:
+              key: "X-Upstream-Addr"
+              value: "%UPSTREAM_REMOTE_ADDRESS%"
 
       # custom external health check
-      custom_health_check:
-        name: envoy.health_checkers.redis
-        typed_config:
-          "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
+      # custom_health_check:
+      #   name: envoy.health_checkers.redis
+      #   typed_config:
+      #     "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
 
       # tcp_health_check:
       #   send:

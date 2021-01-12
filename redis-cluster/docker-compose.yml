@@ -11,6 +11,10 @@ services:
     image: envoyproxy/envoy:v1.16.2
     volumes:
       - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
+    command:
+      - envoy
+      - -c /etc/envoy/envoy.yaml
+      - --component-log-level upstream:trace
     network_mode: host
 
   # Redis sentinel
@@ -26,6 +30,20 @@ services:
     command:
       - redis-server
       - --port 6002
+    network_mode: host
+
+  redis3:
+    image: redis:6-alpine
+    command:
+      - redis-server
+      - --port 6003
+    network_mode: host
+
+  redis4:
+    image: redis:6-alpine
+    command:
+      - redis-server
+      - --port 6004
     network_mode: host
 
   sentinel1:
