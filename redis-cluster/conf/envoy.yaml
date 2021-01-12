@@ -1,3 +1,6 @@
+node:
+  cluster: test-cluster
+  id: test-id
 static_resources:
   listeners:
   - name: redis_listener
@@ -17,28 +20,58 @@ static_resources:
             catch_all_route:
               cluster: redis_cluster
   clusters:
-  - name: redis_cluster
+  - name: eds_sentinel
     connect_timeout: 1s
-    type: strict_dns # static
-    lb_policy: MAGLEV
+    type: static
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    upstream_connection_options:
+      tcp_keepalive: {}
     load_assignment:
-      cluster_name: redis_cluster
+      cluster_name: eds_sentinel
       endpoints:
       - lb_endpoints:
         - endpoint:
-            health_check_config:
-              port_value: 9999
             address:
               socket_address:
                 address: 127.0.0.1
-                port_value: 6001
-        - endpoint:
-            health_check_config:
-              port_value: 9999
-            address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 6002
+                port_value: 18000
+
+
+  - name: mymaster
+    connect_timeout: 1s
+    lb_policy: MAGLEV
+    # type: strict_dns # static
+    # load_assignment:
+    #   cluster_name: redis_cluster
+    #   endpoints:
+    #   - lb_endpoints:
+    #     - endpoint:
+    #         health_check_config:
+    #           port_value: 9999
+    #         address:
+    #           socket_address:
+    #             address: 127.0.0.1
+    #             port_value: 6001
+    #     - endpoint:
+    #         health_check_config:
+    #           port_value: 9999
+    #         address:
+    #           socket_address:
+    #             address: 127.0.0.1
+    #             port_value: 6002
+    
+    type: eds
+    eds_cluster_config:
+      eds_config:
+        resource_api_version: v3
+        api_config_source:
+          api_type: grpc
+          transport_api_version: v3
+          grpc_services:
+            - envoy_grpc:
+                cluster_name: eds_sentinel
+
     health_checks:
       timeout: 1s
       interval: 2s
@@ -46,19 +79,19 @@ static_resources:
       healthy_threshold: 1
       event_log_path: "/dev/stdout"
 
-      # custom external health check
-      http_health_check:
-        host: 127.0.0.1
-        path: "/"
-        request_headers_to_add:
-          - header:
-              key: "X-Upstream-Addr"
-              value: "%UPSTREAM_REMOTE_ADDRESS%"
+      # http_health_check:
+      #   host: 127.0.0.1
+      #   path: "/"
+      #   request_headers_to_add:
+      #     - header:
+      #         key: "X-Upstream-Addr"
+      #         value: "%UPSTREAM_REMOTE_ADDRESS%"
 
-      # custom_health_check:
-      #   name: envoy.health_checkers.redis
-      #   typed_config:
-      #     "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
+      # custom external health check
+      custom_health_check:
+        name: envoy.health_checkers.redis
+        typed_config:
+          "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
 
       # tcp_health_check:
       #   send:
