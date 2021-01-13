@@ -1,6 +1,26 @@
 node:
   cluster: test-cluster
   id: test-id
+
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9001
+
+dynamic_resources:
+  # Please use sentinel XDS from
+  # https://github.com/vanhtuan0409/envoy-sentinel-xds
+  cds_config:
+    resource_api_version: v3
+    api_config_source:
+      api_type: grpc
+      transport_api_version: v3
+      grpc_services:
+      - envoy_grpc:
+          cluster_name: eds_sentinel
+
 static_resources:
   listeners:
   - name: redis_listener
@@ -18,7 +38,7 @@ static_resources:
             op_timeout: 0.5s
           prefix_routes:
             catch_all_route:
-              cluster: redis_cluster
+              cluster: mymaster1
   clusters:
   - name: eds_sentinel
     connect_timeout: 1s
@@ -37,93 +57,54 @@ static_resources:
                 address: 127.0.0.1
                 port_value: 18000
 
-
-  - name: mymaster
-    connect_timeout: 1s
-    lb_policy: MAGLEV
-
-    # common_lb_config:
-    #   consistent_hashing_lb_config:
-    #     use_hostname_for_hashing: true
-
-    # type: static
-    # load_assignment:
-    #   cluster_name: redis_cluster
-    #   endpoints:
-    #   - lb_endpoints:
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         hostname: group1
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6001
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         hostname: group1
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6002
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         hostname: group2
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6003
-    #     - endpoint:
-    #         health_check_config:
-    #           port_value: 9999
-    #         hostname: group2
-    #         address:
-    #           socket_address:
-    #             address: 127.0.0.1
-    #             port_value: 6004
-    
-    type: eds
-    eds_cluster_config:
-      eds_config:
-        resource_api_version: v3
-        api_config_source:
-          api_type: grpc
-          transport_api_version: v3
-          grpc_services:
-            - envoy_grpc:
-                cluster_name: eds_sentinel
-
-    health_checks:
-      timeout: 1s
-      interval: 2s
-      unhealthy_threshold: 1
-      healthy_threshold: 1
-      event_log_path: "/dev/stdout"
-
-      # http_health_check:
-      #   host: 127.0.0.1
-      #   path: "/"
-      #   request_headers_to_add:
-      #     - header:
-      #         key: "X-Upstream-Addr"
-      #         value: "%UPSTREAM_REMOTE_ADDRESS%"
-
-      # custom external health check
-      custom_health_check:
-        name: envoy.health_checkers.redis
-        typed_config:
-          "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
-
-      # tcp_health_check:
-      #   send:
-      #     text: "696e666f207265706c69636174696f6e5c725c6e"
-      #   receive:
-      #     - text: "726f6c653a6d6173746572"
-admin:
-  access_log_path: "/dev/null"
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 9001
+  # - name: mymaster
+  #   connect_timeout: 1s
+  #   lb_policy: MAGLEV
+  #   type: static
+  #   load_assignment:
+  #     cluster_name: redis_cluster
+  #     endpoints:
+  #     - lb_endpoints:
+  #       - endpoint:
+  #           health_check_config:
+  #             port_value: 9999
+  #           hostname: group1
+  #           address:
+  #             socket_address:
+  #               address: 127.0.0.1
+  #               port_value: 6001
+  #       - endpoint:
+  #           health_check_config:
+  #             port_value: 9999
+  #           hostname: group1
+  #           address:
+  #             socket_address:
+  #               address: 127.0.0.1
+  #               port_value: 6002
+  #       - endpoint:
+  #           health_check_config:
+  #             port_value: 9999
+  #           hostname: group2
+  #           address:
+  #             socket_address:
+  #               address: 127.0.0.1
+  #               port_value: 6003
+  #       - endpoint:
+  #           health_check_config:
+  #             port_value: 9999
+  #           hostname: group2
+  #           address:
+  #             socket_address:
+  #               address: 127.0.0.1
+  #               port_value: 6004
+  #   health_checks:
+  #     timeout: 1s
+  #     interval: 2s
+  #     unhealthy_threshold: 1
+  #     healthy_threshold: 1
+  #     event_log_path: "/dev/stdout"
+  #     # custom external health check
+  #     custom_health_check:
+  #       name: envoy.health_checkers.redis
+  #       typed_config:
+  #         "@type": type.googleapis.com/envoy.config.filter.network.redis_proxy.v2.RedisProxy
