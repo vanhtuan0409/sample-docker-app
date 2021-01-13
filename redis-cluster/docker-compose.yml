@@ -8,7 +8,7 @@ services:
   #   network_mode: host
 
   envoy:
-    image: envoyproxy/envoy:v1.16.2
+    image: envoyproxy/envoy:v1.17.0
     volumes:
       - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
     command:
