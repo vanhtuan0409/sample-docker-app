@@ -11,10 +11,6 @@ services:
     image: envoyproxy/envoy:v1.17.0
     volumes:
       - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
-    command:
-      - envoy
-      - -c /etc/envoy/envoy.yaml
-      - --component-log-level upstream:trace
     network_mode: host
 
   # Redis sentinel
