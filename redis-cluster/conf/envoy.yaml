@@ -41,9 +41,10 @@ static_resources:
   - name: mymaster
     connect_timeout: 1s
     lb_policy: MAGLEV
-    common_lb_config:
-      consistent_hashing_lb_config:
-        use_hostname_for_hashing: true
+
+    # common_lb_config:
+    #   consistent_hashing_lb_config:
+    #     use_hostname_for_hashing: true
 
     # type: static
     # load_assignment:
