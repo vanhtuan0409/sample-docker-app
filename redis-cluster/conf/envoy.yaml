@@ -19,7 +19,7 @@ dynamic_resources:
       transport_api_version: v3
       grpc_services:
       - envoy_grpc:
-          cluster_name: eds_sentinel
+          cluster_name: xds_sentinel
       set_node_on_first_message_only: true
 
 static_resources:
@@ -41,7 +41,7 @@ static_resources:
             catch_all_route:
               cluster: mymaster1
   clusters:
-  - name: eds_sentinel
+  - name: xds_sentinel
     connect_timeout: 1s
     type: static
     lb_policy: round_robin
@@ -49,7 +49,7 @@ static_resources:
     upstream_connection_options:
       tcp_keepalive: {}
     load_assignment:
-      cluster_name: eds_sentinel
+      cluster_name: xds_sentinel
       endpoints:
       - lb_endpoints:
         - endpoint:
