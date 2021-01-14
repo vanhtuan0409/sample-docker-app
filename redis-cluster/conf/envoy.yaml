@@ -47,8 +47,11 @@ static_resources:
             enable_hashtagging: false
             enable_command_stats: true
           prefix_routes:
+            routes:
+              - prefix: "foo:"
+                cluster: mymaster2
             catch_all_route:
-              cluster: mymaster
+              cluster: mymaster1
   clusters:
   - name: xds_sentinel
     connect_timeout: 1s
