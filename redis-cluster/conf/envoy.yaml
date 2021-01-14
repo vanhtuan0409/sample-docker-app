@@ -44,6 +44,8 @@ static_resources:
           stat_prefix: egress_redis
           settings:
             op_timeout: 0.5s
+            enable_hashtagging: false
+            enable_command_stats: true
           prefix_routes:
             catch_all_route:
               cluster: mymaster
