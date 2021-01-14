@@ -46,6 +46,8 @@ static_resources:
             op_timeout: 0.5s
             enable_hashtagging: false
             enable_command_stats: true
+            max_buffer_size_before_flush: 2048
+            buffer_flush_timeout: 0.001s
           prefix_routes:
             routes:
               - prefix: "foo:"
