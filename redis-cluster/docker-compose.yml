@@ -9,6 +9,7 @@ services:
 
   envoy:
     image: envoyproxy/envoy:v1.17.0
+    restart: always
     volumes:
       - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
     network_mode: host
