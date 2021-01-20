@@ -5,6 +5,7 @@ import os
 import signal
 import sys
 import time
+import hashlib
 
 # The number of seconds to wait for children to gracefully exit after
 # propagating SIGTERM before force killing children.
@@ -15,6 +16,7 @@ TERM_WAIT_SECONDS = 30
 
 restart_epoch = -1
 pid_list = []
+last_crc = ""
 
 
 def term_all_children():
@@ -185,12 +187,27 @@ def fork_and_exec():
     print("forked new child process with PID={}".format(child_pid))
     pid_list.append(child_pid)
 
+def cal_checksum(f_path):
+  f = open(f_path, 'rb')
+  content = f.read()
+  hasher = hashlib.md5()
+  hasher.update(content)
+  return hasher.hexdigest()
+
+def set_checksum(f_path):
+  try:
+    global last_crc
+    last_crc = cal_checksum(f_path)
+  except Exception:
+    pass
 
 def main():
+
   """ Script main. This script is designed so that a process watcher like runit or monit can watch
       this process and take corrective action if it ever goes away. """
 
   print("starting hot-restarter with target: {}".format(sys.argv[1]))
+  crc_file = os.getenv("ENVOY_CRC_FILE", "")
 
   signal.signal(signal.SIGTERM, sigterm_handler)
   signal.signal(signal.SIGINT, sigint_handler)
@@ -201,7 +218,16 @@ def main():
   # Start the first child process and then go into an endless loop since everything else happens via
   # signals.
   fork_and_exec()
+  if crc_file != "":
+    set_checksum(crc_file)
+
   while True:
+    if crc_file != "":
+      global last_crc
+      new_crc = cal_checksum(crc_file)
+      if new_crc != last_crc:
+        last_crc = new_crc
+        fork_and_exec()
     time.sleep(60)
 
 

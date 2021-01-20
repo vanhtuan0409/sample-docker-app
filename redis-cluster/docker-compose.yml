@@ -8,10 +8,18 @@ services:
   #   network_mode: host
 
   envoy:
-    image: envoyproxy/envoy:v1.17.0
+    image: myenvoy:v1.17.0
+    build: ./docker/envoy
     restart: always
     volumes:
       - ./conf/envoy.yaml:/etc/envoy/envoy.yaml
+    command:
+      - /usr/local/bin/envoy
+      - -c /etc/envoy/envoy.yaml
+      - --drain-time-s 5
+      - --parent-shutdown-time-s 5
+    environment:
+      ENVOY_CRC_FILE: /etc/envoy/envoy.yaml
     network_mode: host
 
   # Redis sentinel
