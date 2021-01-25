@@ -6,6 +6,7 @@ import signal
 import sys
 import time
 import hashlib
+import socket
 
 # The number of seconds to wait for children to gracefully exit after
 # propagating SIGTERM before force killing children.
@@ -17,6 +18,7 @@ TERM_WAIT_SECONDS = 30
 restart_epoch = -1
 pid_list = []
 last_crc = ""
+hostname = socket.gethostname()
 
 
 def term_all_children():
@@ -174,14 +176,15 @@ def fork_and_exec():
       set the current restart epoch in an env variable that processes can read if they care. """
 
   global restart_epoch
+  global hostname
   restart_epoch += 1
   print("forking and execing new child process at epoch {}".format(restart_epoch))
 
   child_pid = os.fork()
   if child_pid == 0:
     # Child process
-    print("Perform command: {} --restart-epoch {} {}".format(sys.argv[1], restart_epoch, " ".join(sys.argv[2:])))
-    os.execl(sys.argv[1], sys.argv[1], "--restart-epoch", "{}".format(restart_epoch), *sys.argv[2:])
+    print("Perform command: {} --service-node {} --restart-epoch {} {}".format(sys.argv[1], hostname, restart_epoch, " ".join(sys.argv[2:])))
+    os.execl(sys.argv[1], sys.argv[1], "--service-node", hostname, "--restart-epoch", "{}".format(restart_epoch), *sys.argv[2:])
   else:
     # Parent process
     print("forked new child process with PID={}".format(child_pid))
