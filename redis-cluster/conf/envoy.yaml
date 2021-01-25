@@ -12,15 +12,17 @@ admin:
 dynamic_resources:
   # Please use sentinel XDS from
   # https://github.com/vanhtuan0409/envoy-sentinel-xds
+  ads_config:
+    api_type: grpc
+    transport_api_version: v3
+    grpc_services:
+    - envoy_grpc:
+        cluster_name: xds_sentinel
+    set_node_on_first_message_only: true
+
   cds_config:
     resource_api_version: v3
-    api_config_source:
-      api_type: grpc
-      transport_api_version: v3
-      grpc_services:
-      - envoy_grpc:
-          cluster_name: xds_sentinel
-      set_node_on_first_message_only: true
+    ads: {}
 
 layered_runtime:
   layers:
