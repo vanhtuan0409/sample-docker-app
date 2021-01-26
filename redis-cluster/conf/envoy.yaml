@@ -83,33 +83,21 @@ static_resources:
   #     endpoints:
   #     - lb_endpoints:
   #       - endpoint:
-  #           health_check_config:
-  #             port_value: 9999
-  #           hostname: group1
   #           address:
   #             socket_address:
   #               address: 127.0.0.1
   #               port_value: 6001
   #       - endpoint:
-  #           health_check_config:
-  #             port_value: 9999
-  #           hostname: group1
   #           address:
   #             socket_address:
   #               address: 127.0.0.1
   #               port_value: 6002
   #       - endpoint:
-  #           health_check_config:
-  #             port_value: 9999
-  #           hostname: group2
   #           address:
   #             socket_address:
   #               address: 127.0.0.1
   #               port_value: 6003
   #       - endpoint:
-  #           health_check_config:
-  #             port_value: 9999
-  #           hostname: group2
   #           address:
   #             socket_address:
   #               address: 127.0.0.1
