@@ -11,13 +11,13 @@ def read(N):
     for i in range(N):
         (key, expected_val) = gen_kv(i)
         try:
-            val = r.get(key)
+            val = r.get(key).decode('utf-8')
             if val == expected_val:
                 print("Key is ok: {}".format(key))
             else:
-                print("Key is ok: {}".format(key))
-        except Exception:
-            print("Key is not OK: {}".format(key))
+                print("Key is not ok: {}. Expected {} got {}".format(key, expected_val, val))
+        except Exception as e:
+            print("Key is not OK: {}. ERR: {}".format(key, e))
 
 def write(N):
     for i in range(N):
@@ -25,8 +25,8 @@ def write(N):
         try:
             r.set(key, val)
             print("Key is ok: {}".format(key))
-        except Exception:
-            print("Key is not OK: {}".format(key))
+        except Exception as e:
+            print("Key is not OK: {}. ERR: {}".format(key, e))
 
 def main():
     assert len(sys.argv) >= 2, "Missing command"
