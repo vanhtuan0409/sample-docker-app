@@ -26,7 +26,6 @@ def write(N):
         (key, val) = gen_kv(i)
         try:
             r.set(key, val)
-            print("Key is ok: {}".format(key))
         except Exception as e:
             print("Key is not OK: {}. ERR: {}".format(key, e))
 
