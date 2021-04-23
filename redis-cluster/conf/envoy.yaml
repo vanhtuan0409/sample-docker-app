@@ -16,8 +16,8 @@ dynamic_resources:
     api_type: grpc
     transport_api_version: v3
     grpc_services:
-    - envoy_grpc:
-        cluster_name: xds_sentinel
+      - envoy_grpc:
+          cluster_name: xds_sentinel
     set_node_on_first_message_only: true
 
   cds_config:
@@ -33,46 +33,46 @@ layered_runtime:
 
 static_resources:
   listeners:
-  - name: redis_listener
-    address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 6379
-    filter_chains:
-    - filters:
-      - name: envoy.filters.network.redis_proxy
-        typed_config:
-          "@type": type.googleapis.com/envoy.extensions.filters.network.redis_proxy.v3.RedisProxy
-          stat_prefix: egress_redis
-          settings:
-            op_timeout: 0.5s
-            enable_hashtagging: false
-            enable_command_stats: true
-            max_buffer_size_before_flush: 1024
-            buffer_flush_timeout: 0.0004s
-          prefix_routes:
-            routes:
-              - prefix: "foo:"
-                cluster: mymaster2
-            catch_all_route:
-              cluster: mymaster1
+    - name: redis_listener
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 6379
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.redis_proxy
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.redis_proxy.v3.RedisProxy
+                stat_prefix: egress_redis
+                settings:
+                  op_timeout: 0.5s
+                  enable_hashtagging: false
+                  enable_command_stats: true
+                  max_buffer_size_before_flush: 1024
+                  buffer_flush_timeout: 0.0004s
+                prefix_routes:
+                  routes:
+                    - prefix: "foo:"
+                      cluster: mymaster2
+                  catch_all_route:
+                    cluster: mymaster1
   clusters:
-  - name: xds_sentinel
-    connect_timeout: 1s
-    type: static
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    upstream_connection_options:
-      tcp_keepalive: {}
-    load_assignment:
-      cluster_name: xds_sentinel
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 18000
+    - name: xds_sentinel
+      connect_timeout: 1s
+      type: static
+      lb_policy: round_robin
+      http2_protocol_options: {}
+      upstream_connection_options:
+        tcp_keepalive: {}
+      load_assignment:
+        cluster_name: xds_sentinel
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: 127.0.0.1
+                      port_value: 18000
 
   # - name: mymaster
   #   connect_timeout: 1s
