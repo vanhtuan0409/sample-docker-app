@@ -4,3 +4,5 @@ volumes
 istio/resources/certs/
 
 redis-cluster/data/
+
+sample-uptime-kuma/data/
