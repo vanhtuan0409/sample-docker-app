@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  registry:
+    restart: always
+    user: 1000:1000
+    image: registry:2.8.0
+    environment: {}
+    volumes:
+      - ./confs/registry/config.yaml:/etc/docker/registry/config.yml
+      - ./volumes:/var/lib/registry
+
+  webui:
+    restart: always
+    image: joxit/docker-registry-ui:2.1.0
+    ports:
+      - 8077:80
+    environment:
+      - REGISTRY_TITLE=My Private Docker Registry
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - SINGLE_REGISTRY=true
+      - DELETE_IMAGES=true
+    depends_on:
+      - registry
