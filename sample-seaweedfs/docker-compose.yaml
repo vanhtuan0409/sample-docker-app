@@ -2,12 +2,38 @@ version: "3.8"
 
 services:
   weed:
-    image: chrislusf/seaweedfs:2.90
-    container_name: seaweedfs
+    # image: chrislusf/seaweedfs:2.90
+    image: chrislusf/seaweedfs:dev
     user: 1000:1000
+    container_name: seaweedfs
     ports:
+      # master
+      - 19333:19333
+      # volume
+      - 18080:18080
+      # filer
+      - 18888:18888
+      # s3
       - 8333:8333
-    command: "server -options=/etc/seaweedfs/server.conf"
+      # iam
+      - 8111:8111
+      # metrics port
+      - 9091:9091
+    entrypoint: /usr/bin/weed
+    command: "-v=3 server -options=/etc/seaweedfs/server.conf"
     volumes:
       - ./confs/seaweedfs:/etc/seaweedfs
-      - ./volumes/seaweedfs:/data
+      - ./volumes/seaweedfs:/external/data
+
+  s3manager:
+    image: cloudlena/s3manager:v0.2.0
+    container_name: s3manager
+    ports:
+      - 8088:8080
+    environment:
+      - ENDPOINT=weed:8333
+      - ACCESS_KEY_ID=admin
+      - SECRET_ACCESS_KEY=some_secret_key1
+      - USE_SSL=false
+    depends_on:
+      - weed

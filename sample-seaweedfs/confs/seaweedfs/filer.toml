@@ -1,0 +1,9 @@
+[filer.options]
+recursive_delete = false
+
+[leveldb2]
+enabled = false
+
+[leveldb3]
+enabled = true
+dir = "/external/data/filerldb3"
