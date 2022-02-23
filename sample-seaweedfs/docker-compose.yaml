@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  weed:
+    image: chrislusf/seaweedfs:2.90
+    container_name: seaweedfs
+    user: 1000:1000
+    ports:
+      - 8333:8333
+    command: "server -options=/etc/seaweedfs/server.conf"
+    volumes:
+      - ./confs/seaweedfs:/etc/seaweedfs
+      - ./volumes/seaweedfs:/data
