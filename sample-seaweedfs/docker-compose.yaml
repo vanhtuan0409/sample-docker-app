@@ -8,11 +8,14 @@ services:
     container_name: seaweedfs
     ports:
       # master
+      - 9333:9333
       - 19333:19333
       # volume
-      - 18080:18080
+      - 3478:3478
+      - 13478:13478
       # filer
-      - 18888:18888
+      - 8822:8822
+      - 18822:18822
       # s3
       - 8333:8333
       # iam
@@ -31,9 +34,9 @@ services:
     ports:
       - 8088:8080
     environment:
-      - ENDPOINT=weed:8333
-      - ACCESS_KEY_ID=admin
-      - SECRET_ACCESS_KEY=some_secret_key1
+      - ENDPOINT=10.21.56.4:8333
+      - ACCESS_KEY_ID=some_access_key
+      - SECRET_ACCESS_KEY=some_secret_key
       - USE_SSL=false
     depends_on:
       - weed
